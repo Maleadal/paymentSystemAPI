@@ -1,0 +1,12 @@
+Gets the fullname of students where course, year, and section is specified
+
+SELECT concat(student.first_name, student.last_name) as fullname 
+FROM `section`, student, course, year 
+WHERE student.id = section.student_id AND 
+course.id = section.course_id AND
+year.id = section.year_id and 
+section.section_name = 'B' AND
+course.code = 'BSIT' AND
+year.year = 3
+
+/*****************************************************************************/
