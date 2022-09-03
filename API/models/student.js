@@ -10,13 +10,13 @@ const Student = (student) => {
     this.date_and_time = student.DateAndTime
 }
 Student.Getstudent = (course, year, section, result) => {
-    dbConn.query(`Select Student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
+    dbConn.query(`Select student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
     FROM section, student, year, course, transaction
     WHERE year.id = section.year_id and 
     section.student_code = student.code AND
     transaction.student_code = student.code and
     course.id = year.course_id and
-    course.code = '${course}' and year.year = ${year} and section.name = '${section}'`, (student_err, student_res) => {
+    course.code = '${course}' and year.year = ${year} and section.name = '${section}' order by student.full_name`, (student_err, student_res) => {
         if(student_err){
             console.log('Error in query: ', student_err);
         } else if(student_res.length !== 0){
@@ -30,13 +30,13 @@ Student.Getstudent = (course, year, section, result) => {
     })
 }
 Student.getStudentByName = (name, result) => {
-    dbConn.query(`Select Student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
+    dbConn.query(`Select student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
     FROM section, student, year, course, transaction
     WHERE year.id = section.year_id and 
     section.student_code = student.code AND
     transaction.student_code = student.code and
     course.id = year.course_id and
-                (lower(full_name) LIKE '%${name}%')`, (studentInfo_err, studentInfo_res) => {
+                (lower(full_name) LIKE '%${name}%') order by student.full_name`, (studentInfo_err, studentInfo_res) => {
                     if(studentInfo_err){
                         console.log('Error in query: ', studentInfo_err);
                         result(null, {'message': `Error in query: ${studentInfo_err}`});
@@ -51,13 +51,13 @@ Student.getStudentByName = (name, result) => {
                 })
 }
 Student.getStudentByCode = (code, result) => {
-    dbConn.query(`Select Student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
+    dbConn.query(`Select student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
     FROM section, student, year, course, transaction
     WHERE year.id = section.year_id and 
     section.student_code = student.code AND
     transaction.student_code = student.code and
     course.id = year.course_id and
-                student.code = ${code}`, (studentInfo_err, studentInfo_res) => {
+                student.code = '${code}' order by student.full_name`, (studentInfo_err, studentInfo_res) => {
                     if(studentInfo_err){
                         console.log('Error in query: ', studentInfo_err);
                         result(null, {'message': `Error in query: ${studentInfo_err}`});
@@ -72,13 +72,13 @@ Student.getStudentByCode = (code, result) => {
                 })
 }
 Student.getStudentByQueryName = (name, result) => {
-    dbConn.query(`Select Student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
+    dbConn.query(`Select student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
     FROM section, student, year, course, transaction
     WHERE year.id = section.year_id and 
     section.student_code = student.code AND
     transaction.student_code = student.code and
     course.id = year.course_id and
-                (lower(full_name) LIKE '%${name}%')`, (studentInfo_err, studentInfo_res) => {
+                (lower(full_name) LIKE '%${name}%') order by student.full_name`, (studentInfo_err, studentInfo_res) => {
                     if(studentInfo_err){
                         console.log('Error in query: ', studentInfo_err);
                         result(null, {'message': `Error in query: ${studentInfo_err}`});
@@ -94,13 +94,13 @@ Student.getStudentByQueryName = (name, result) => {
 }
 
 Student.getStudentByQueryCode = (code, result) => {
-    dbConn.query(`Select Student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
+    dbConn.query(`Select student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
     FROM section, student, year, course, transaction
     WHERE year.id = section.year_id and 
     section.student_code = student.code AND
     transaction.student_code = student.code and
     course.id = year.course_id and
-                (lower(student.code) LIKE '%${code}%')`, (studentInfo_err, studentInfo_res) => {
+                (lower(student.code) LIKE '%${code}%') order by student.full_name`, (studentInfo_err, studentInfo_res) => {
                     if(studentInfo_err){
                         console.log('Error in query: ', studentInfo_err);
                         result(null, {'message': `Error in query: ${studentInfo_err}`});
@@ -109,22 +109,22 @@ Student.getStudentByQueryCode = (code, result) => {
                         result(null, studentInfo_res)
                     }
                     else{
-                        console.log(`No student with the name of ${name}`);
-                        result(null, {'message': `No student with the name of ${name}`});
+                        console.log(`No student with the name of ${code}`);
+                        result(null, {'message': `No student with the name of ${code}`});
                     }
                 })
 }
 
 
 Student.getStudentByQueryNameAndCode = (name, code, result) => {
-    dbConn.query(`Select Student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
+    dbConn.query(`Select student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
     FROM section, student, year, course, transaction
     WHERE year.id = section.year_id and 
     section.student_code = student.code AND
     transaction.student_code = student.code and
     course.id = year.course_id and
                 (lower(student.code) LIKE '%${code}%') and
-                (lower(student.full_name) LIKE '%${name}%')`, (studentInfo_err, studentInfo_res) => {
+                (lower(student.full_name) LIKE '%${name}%') order by student.full_name`, (studentInfo_err, studentInfo_res) => {
                     if(studentInfo_err){
                         console.log('Error in query: ', studentInfo_err);
                         result(null, {'message': `Error in query: ${studentInfo_err}`});
@@ -139,13 +139,13 @@ Student.getStudentByQueryNameAndCode = (name, code, result) => {
                 })
 }
 Student.getStudents = (result) => {
-    dbConn.query(`Select Student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
+    dbConn.query(`Select student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
     FROM section, student, year, course, transaction
     WHERE year.id = section.year_id and 
     section.student_code = student.code AND
     transaction.student_code = student.code and
     course.id = year.course_id and
-                course.id = year.course_id`, (studentInfo_err, studentInfo_res) => {
+                course.id = year.course_id order by student.full_name`, (studentInfo_err, studentInfo_res) => {
                     if(studentInfo_err){
                         console.log('Error in query: ', studentInfo_err);
                         result(null, {'message': `Error in query: ${studentInfo_err}`});
@@ -161,13 +161,13 @@ Student.getStudents = (result) => {
 }
 
 Student.getStudentByPay = (isPaid, result) => {
-    dbConn.query(`Select Student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
+    dbConn.query(`Select student.code, student.full_name, sex, concat(course.code, '-', year.year, section.name) as Section, transaction.isPaid
     FROM section, student, year, course, transaction
     WHERE year.id = section.year_id and 
     section.student_code = student.code AND
     transaction.student_code = student.code and
     course.id = year.course_id and
-    transaction.isPaid = ${isPaid}`, (studentInfo_err, studentInfo_res) => {
+    transaction.isPaid = ${isPaid} order by student.full_name`, (studentInfo_err, studentInfo_res) => {
         if(studentInfo_err){
             console.log('Error in query: ', studentInfo_err);
             result(null, {'message': `Error in query: ${studentInfo_err}`});

@@ -1,10 +1,11 @@
 const mysql = require('mysql');
 
 const dbConn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'ccs_masterlist'
+    host: 'sql6.freemysqlhosting.net',
+    user: 'sql6516910',
+    password: 'V1qW1FD6eB',
+    database: 'sql6516910',
+    port: 3306
 });
 
 dbConn.connect((error) => {

@@ -16,7 +16,7 @@ const getStudent = (req, res) => {
 }
 const getStudentByQuery = (req, res) => {
     const {name, code} = req.query;
-    console.log(`looking for student with name of ${name}`);
+    console.log(`looking for student with name of ${name ? name : code}`);
     if(name && code){
         StudentModel.getStudentByQueryNameAndCode(name, code, (err, student) => {
             if(err){
